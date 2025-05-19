@@ -1,57 +1,59 @@
 // src/app/page.tsx
 'use client';
-
-import { useState } from 'react';
+import Setting from '@/components/Setting';
 import useTimer from '@/hooks/useTimer';
+import { useSessionStore } from '@/stores/useSessionStore';
+import { useSettingStore } from '@/stores/useSettingStore';
 
 export default function HomePage() {
-  const TOTAL_MS = 0.2 * 60 * 1000; // 25 menit
-  const [showIndicator, setShowIndicator] = useState(false);
-  const [completedCount, setCompletedCount] = useState(0);
+  const { durationMS, completeNext } = useSessionStore();
+  const { isSetting } = useSettingStore();
 
-  const { label, start, stop, elapsedMS } = useTimer(TOTAL_MS, {
-    onComplete: () => {
-      // setiap kali selesai: sembunyikan indikator & tambah counter
-      setShowIndicator(false);
-      setCompletedCount((c) => c + 1);
-    },
+  const { label, start, stop, isRunning, elapsedMS } = useTimer(durationMS, {
+    onComplete: completeNext,
   });
 
   const handleStart = () => {
-    setShowIndicator(true);
     start();
   };
 
   const handleStop = () => {
     stop();
-    setShowIndicator(false);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen space-y-6">
-      {showIndicator ? (
-        <div className="text-center space-y-4">
-          <p className="text-2xl font-semibold">{label}</p>
-          <button
-            onClick={handleStop}
-            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-          >
-            Stop
-          </button>
-          {elapsedMS}
-        </div>
+    <main
+      className={`font-sans h-full flex flex-col items-center justify-center ${
+        isRunning ? 'bg-gif' : ''
+      }`}
+    >
+      {isSetting ? (
+        <Setting />
+      ) : isRunning ? (
+        <section className='flex flex-col gap-1 items-center'>
+          <h2 className='text-3xl font-semibold'>focus.</h2>
+          <div className='flex flex-row gap-6 items-center'>
+            <h3 className='text-lg'>{label}</h3>
+            <button className='text-md hover:text-red-400' onClick={handleStop}>
+              give up?
+            </button>
+            {elapsedMS}
+          </div>
+        </section>
       ) : (
-        <button
-          onClick={handleStart}
-          className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
-        >
-          Start Timer
-        </button>
+        <section className='flex flex-row gap-8 items-center'>
+          <div className='flex flex-col text-left'>
+            <h2 className='text-3xl font-semibold'>focus.</h2>
+            <p className='font-light'>manifesting 🙏</p>
+          </div>
+          <button
+            className='cursor-pointer text-2xl font-semibold'
+            onClick={handleStart}
+          >
+            click to start
+          </button>
+        </section>
       )}
-
-      <p className="mt-4 text-gray-700">
-        Completed sessions: <span className="font-medium">{completedCount}</span>
-      </p>
-    </div>
+    </main>
   );
 }
