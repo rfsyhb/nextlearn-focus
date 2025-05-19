@@ -9,7 +9,7 @@ export default function HomePage() {
   const { durationMS, completeNext } = useSessionStore();
   const { isSetting } = useSettingStore();
 
-  const { label, start, stop, isRunning, elapsedMS } = useTimer(durationMS, {
+  const { label, start, stop, isRunning } = useTimer(durationMS, {
     onComplete: completeNext,
   });
 
@@ -34,10 +34,9 @@ export default function HomePage() {
           <h2 className='text-3xl font-semibold'>focus.</h2>
           <div className='flex flex-row gap-6 items-center'>
             <h3 className='text-lg'>{label}</h3>
-            <button className='text-md hover:text-red-400' onClick={handleStop}>
+            <button className='text-md hover:text-red-400 cursor-pointer' onClick={handleStop}>
               give up?
             </button>
-            {elapsedMS}
           </div>
         </section>
       ) : (
