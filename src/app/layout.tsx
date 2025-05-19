@@ -11,7 +11,10 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: 'focus.',
-  description: 'simple timer app',
+  description: 'a leap of faith',
+  icons: {
+    icon: '/riyalicon.png'
+  }
 };
 
 export default function RootLayout({
