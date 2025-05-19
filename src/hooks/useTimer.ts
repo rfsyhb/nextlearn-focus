@@ -1,4 +1,4 @@
-import getIndicatorLabel from '@/app/utils/timer';
+import getIndicatorLabel from '@/utils/timer';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface TimerOptions {
@@ -7,7 +7,7 @@ interface TimerOptions {
 }
 
 export default function useTimer(
-  totalMS: number,
+  totalMS?: number | null,
   { onComplete, tickRate = 1000 }: TimerOptions = {},
 ) {
   const [elapsedMS, setElapsedMS] = useState(0);
@@ -41,7 +41,7 @@ export default function useTimer(
         const now = Date.now();
         const next = now - startRef.current;
 
-        if (next >= totalMS) {
+        if (typeof totalMS === 'number' && next >= totalMS) {
           setElapsedMS(totalMS);
           setIsRunning(false);
           clearInterval(intervalRef.current!);
@@ -59,7 +59,8 @@ export default function useTimer(
     };
   }, [isRunning, totalMS, tickRate, onComplete]);
 
-  const label = getIndicatorLabel(elapsedMS, totalMS);
+  const label =
+    typeof totalMS === 'number' ? getIndicatorLabel(elapsedMS, totalMS) : '';
 
   return { elapsedMS, label, isRunning, start, stop };
 }
