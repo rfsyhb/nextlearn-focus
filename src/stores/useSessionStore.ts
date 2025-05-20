@@ -73,7 +73,7 @@ export const useSessionStore = create<SessionState>()(
       setRunning: (v) => set({ isRunning: v }), // set the running state
     }),
     {
-      name: 'session-storage',
+      name: 'focus-session-storage',
       // callback sebelum/selesai rehydrate: inject logic reset
       onRehydrateStorage: () => (state) => {
         if (!state) return;
