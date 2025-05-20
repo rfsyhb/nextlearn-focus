@@ -30,10 +30,12 @@ export default function Header() {
   return (
     <header className='flex items-center justify-between font-sans px-4 py-2'>
       <TimerIteration />
-      <p className={`font-light ${!isRunning ? 'block' : 'hidden'}`}>
-        time is ticking, you&rsquo;ve already away for{' '}
-        <span className='font-semibold text-lg'>{awayDuration}</span>
-      </p>
+      {lastCompleted !== 0 && (
+        <p className={`font-light ${!isRunning ? 'block' : 'hidden'}`}>
+          time is ticking, you&rsquo;ve already away for{' '}
+          <span className='font-semibold text-lg'>{awayDuration}</span>
+        </p>
+      )}
       <section className='text-lg font-semibold flex flex-row gap-2'>
         <button onClick={hideSetting} className='cursor-pointer'>
           main
