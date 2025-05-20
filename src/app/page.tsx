@@ -43,7 +43,7 @@ export default function HomePage() {
         <section className='flex flex-row gap-8 items-center'>
           <div className='flex flex-col text-left'>
             <h2 className='text-3xl font-semibold'>focus.</h2>
-            <p className='font-light'>manifesting 🙏</p>
+            <p className='font-light'>it is what it is 🙏</p>
           </div>
           <button
             className='cursor-pointer text-2xl font-semibold'

@@ -1,4 +1,5 @@
-import getIndicatorLabel from '@/utils/timer';
+import { useSessionStore } from '@/stores/useSessionStore';
+import { getIndicatorLabel } from '@/utils/timer';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface TimerOptions {
@@ -12,6 +13,7 @@ export default function useTimer(
 ) {
   const [elapsedMS, setElapsedMS] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const { setRunning } = useSessionStore.getState() // getState because doesn't need to re-render
 
   // simpan timestamp mulai
   const startRef = useRef<number>(0);
@@ -24,16 +26,18 @@ export default function useTimer(
     setElapsedMS(0);
     startRef.current = Date.now();
     setIsRunning(true);
-  }, []);
+    setRunning(true);
+  }, [setRunning]);
 
   // STOP: hentikan & reset elapsed ke 0
   const stop = useCallback(() => {
     setIsRunning(false);
+    setRunning(false);
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
     setElapsedMS(0);
-  }, []);
+  }, [setRunning]);
 
   useEffect(() => {
     if (isRunning) {
@@ -44,6 +48,7 @@ export default function useTimer(
         if (typeof totalMS === 'number' && next >= totalMS) {
           setElapsedMS(totalMS);
           setIsRunning(false);
+          setRunning(false);
           clearInterval(intervalRef.current!);
           onComplete?.();
         } else {
@@ -57,7 +62,7 @@ export default function useTimer(
         clearInterval(intervalRef.current);
       }
     };
-  }, [isRunning, totalMS, tickRate, onComplete]);
+  }, [setRunning, isRunning, totalMS, tickRate, onComplete]);
 
   const label =
     typeof totalMS === 'number' ? getIndicatorLabel(elapsedMS, totalMS) : '';

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: 'focus.',
   description: 'a leap of faith',
   icons: {
-    icon: '/riyalicon.png'
+    icon: '/riyalicon.jpeg'
   }
 };
 

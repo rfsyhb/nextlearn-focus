@@ -1,4 +1,4 @@
-export default function getIndicatorLabel(
+export function getIndicatorLabel(
   elapsedMS: number,
   totalMS: number,
 ): string {
@@ -11,3 +11,15 @@ export default function getIndicatorLabel(
   if (percentLeft <= 75) return 'getting into it';
   return 'just started';
 }
+
+export const formatTime = (ms: number): string => {
+  const totalSeconds = Math.floor(ms / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  const formattedHours = String(hours).padStart(2, '0');
+  const formattedMinutes = String(minutes).padStart(2, '0');
+  const formattedSeconds = String(seconds).padStart(2, '0');
+  return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+} // example output: 00:01:50
