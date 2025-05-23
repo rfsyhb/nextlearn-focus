@@ -2,7 +2,7 @@
 
 import { useTaskStore } from '@/stores/useTaskStore';
 import Portal from './Portal';
-import { X, Expand, Minimize2 } from 'lucide-react';
+import { X, Minimize2, NotebookPen } from 'lucide-react';
 import { useState } from 'react';
 
 export default function FloatingToDo() {
@@ -68,7 +68,7 @@ export default function FloatingToDo() {
           onClick={() => setIsOpen(true)}
           className='fixed bottom-4 right-4 z-[9999] p-2 bg-background/60 rounded-full hover:text-red-400'
         >
-          <Expand />
+          <NotebookPen />
         </button>
       )}
     </Portal>
