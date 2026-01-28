@@ -1,0 +1,62 @@
+import { useEffect, useRef } from 'react';
+import { useTaskStore } from '@/stores/useTaskStore';
+import { useSessionStore } from '@/stores/useSessionStore';
+
+type MandatoryTask = {
+  title: string;
+  hour: number;
+  minute: number;
+};
+
+const mandatoryTasks: MandatoryTask[] = [
+  { title: '04:10 - Subuh', hour: 4, minute: 10 },
+  { title: '08:00 - Lock In', hour: 8, minute: 0 },
+  { title: '11:00 - Lunch Break', hour: 11, minute: 0 },
+  { title: '11:40 - Dzuhur & Break', hour: 11, minute: 40 },
+  { title: '14:00 - Lock In', hour: 14, minute: 0 },
+  { title: '15:00 - Ashar', hour: 15, minute: 0 },
+  { title: '17:50 - Maghrib & Dinner', hour: 17, minute: 50 },
+  { title: '19:00 - Isya', hour: 19, minute: 0 },
+  { title: '21:00 - Journaling', hour: 21, minute: 0 },
+];
+
+export function useTaskDetector() {
+  const addTask = useTaskStore((s) => s.addTask);
+
+  const hasMandatoryCreated = useSessionStore((s) => s.hasMandatoryCreated);
+  const markMandatoryCreated = useSessionStore((s) => s.markMandatoryCreated);
+
+  const timersRef = useRef<number[]>([]);
+
+  useEffect(() => {
+    const nowMs = Date.now();
+
+    for (const task of mandatoryTasks) {
+      // target hari ini pada jam:menit task
+      const target = new Date();
+      target.setHours(task.hour, task.minute, 0, 0);
+      const targetMs = target.getTime();
+
+      // tujuan kamu: user buka jam 11 => task jam 10 dilewati
+      if (targetMs <= nowMs) continue;
+
+      // sudah pernah dibuat hari ini => skip
+      if (hasMandatoryCreated(task.title)) continue;
+
+      const timer = window.setTimeout(() => {
+        // guard lagi untuk jaga-jaga (refresh / strict mode)
+        if (hasMandatoryCreated(task.title)) return;
+
+        addTask(task.title);
+        markMandatoryCreated(task.title);
+      }, targetMs - nowMs);
+
+      timersRef.current.push(timer);
+    }
+
+    return () => {
+      for (const t of timersRef.current) clearTimeout(t);
+      timersRef.current = [];
+    };
+  }, [addTask, hasMandatoryCreated, markMandatoryCreated]);
+}

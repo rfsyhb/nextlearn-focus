@@ -3,7 +3,8 @@ import { useSettingStore } from '@/stores/useSettingStore';
 import TimerIteration from './TimerIteration';
 import { formatTime } from '@/utils/timer';
 import { useSessionStore } from '@/stores/useSessionStore';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useNow } from '@/hooks/useNow';
 
 export default function Header() {
   const showSetting = useSettingStore((s) => s.showSetting);
@@ -13,19 +14,13 @@ export default function Header() {
   const [awayDuration, setAwayDuration] = useState('00:00:00');
 
   const isAway = !isRunning;
-
-  useEffect(() => {
-    if (!isAway) return; // early return if not away
-
-    const interval = setInterval(() => {
-      if (lastCompleted) {
-        const elapsed = Date.now() - lastCompleted;
-        setAwayDuration(formatTime(elapsed));
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [isAway, lastCompleted]);
+  const now = useNow();
+  useMemo(() => {
+    if (isAway && lastCompleted !== 0) {
+      const diff = now - lastCompleted;
+      setAwayDuration(formatTime(diff));
+    }
+  }, [isAway, lastCompleted, now]);
 
   return (
     <header className='flex items-center justify-between font-sans px-4 py-2'>

@@ -8,6 +8,11 @@ interface SessionState {
   lastReset: string; // YYYY-MM-DD
   lastCompleted: number; // last completed date in milliseconds
   isRunning: boolean; // is the timer running
+
+  createdMandatory: Record<string, true>;
+  markMandatoryCreated: (title: string) => void;
+  hasMandatoryCreated: (title: string) => boolean;
+
   setCount: (n: number) => void; // Set the count and reset completed
   setDurationMS: (n: number) => void; // Set the duration in milliseconds
   completeNext: () => void; // Mark the next task as completed
@@ -28,6 +33,13 @@ export const useSessionStore = create<SessionState>()(
       lastReset: new Date().toISOString().slice(0, 10), // e.g. '2025-05-19'
       lastCompleted: 0, // last completed date in milliseconds
       isRunning: false,
+
+      createdMandatory: {},
+      markMandatoryCreated: (title) =>
+        set((s) => ({
+          createdMandatory: { ...s.createdMandatory, [title]: true },
+        })),
+      hasMandatoryCreated: (title) => !!get().createdMandatory[title],
 
       // actions
       setCount: (n) =>
@@ -81,6 +93,7 @@ export const useSessionStore = create<SessionState>()(
         if (state.lastReset !== today) {
           state.completed = Array(state.count).fill(false); // reset completed array
           state.lastReset = today; // update last reset date
+          state.createdMandatory = {}; // reset createdMandatory
         }
       },
     },

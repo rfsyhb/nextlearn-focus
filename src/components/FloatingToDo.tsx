@@ -4,17 +4,19 @@ import { useTaskStore } from '@/stores/useTaskStore';
 import Portal from './Portal';
 import { X, Minimize2, NotebookPen } from 'lucide-react';
 import { useState } from 'react';
+import { useTaskDetector } from '@/hooks/useTaskDetector';
 
 export default function FloatingToDo() {
   const { tasks, addTask, removeTask, toggleTask } = useTaskStore();
   const [newTitle, setNewTitle] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  useTaskDetector();
 
   return (
     <Portal>
       {isOpen ? (
-        <section className='fixed bottom-4 right-4 z-[9999] px-3 py-2 flex flex-col gap-2 bg-background/60 rounded-lg'>
-          <ul className='flex flex-col'>
+        <section className='fixed bottom-4 right-4 z-[9999] px-3 py-2 flex flex-col gap-2 bg-background/60 rounded-lg max-h-44'>
+          <ul className='flex flex-col overflow-y-auto'>
             {tasks.map((task) => (
               <li
                 key={task.id}
@@ -66,9 +68,14 @@ export default function FloatingToDo() {
       ) : (
         <button
           onClick={() => setIsOpen(true)}
-          className='fixed bottom-4 right-4 z-[9999] p-2 bg-background/60 rounded-full hover:text-red-400'
+          className='fixed bottom-4 right-4 z-[9999] p-2 bg-background/60 rounded-full hover:text-red-400 hover:cursor-pointer'
         >
           <NotebookPen />
+          {tasks.length > 0 && (
+            <span className='absolute top-0 left-0 rounded-full bg-red-700 text-white px-1 text-xs font-bold'>
+              {tasks.length}
+            </span>
+          )}
         </button>
       )}
     </Portal>
