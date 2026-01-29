@@ -9,14 +9,11 @@ type MandatoryTask = {
 };
 
 const mandatoryTasks: MandatoryTask[] = [
-  { title: '04:10 - Subuh', hour: 4, minute: 10 },
-  { title: '08:00 - Lock In', hour: 8, minute: 0 },
-  { title: '11:00 - Lunch Break', hour: 11, minute: 0 },
-  { title: '11:40 - Dzuhur & Break', hour: 11, minute: 40 },
-  { title: '14:00 - Lock In', hour: 14, minute: 0 },
+  { title: '04:10 - Fajr', hour: 4, minute: 10 },
+  { title: '11:40 - Dhuhr', hour: 11, minute: 40 },
   { title: '15:00 - Ashar', hour: 15, minute: 0 },
-  { title: '17:50 - Maghrib & Dinner', hour: 17, minute: 50 },
-  { title: '19:00 - Isya', hour: 19, minute: 0 },
+  { title: '17:50 - Maghrib', hour: 17, minute: 50 },
+  { title: '19:00 - Isha', hour: 19, minute: 0 },
   { title: '21:00 - Journaling', hour: 21, minute: 0 },
 ];
 

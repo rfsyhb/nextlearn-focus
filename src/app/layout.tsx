@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/components/Header';
 import FloatingToDo from '@/components/FloatingToDo';
 import FloatingClock from '@/components/FloatingClock';
+import FloatingCurrentActivity from '@/components/FloatingCurrentActivity';
 
 const poppins = Poppins({
   variable: '--font-poppins',
@@ -31,6 +32,7 @@ export default function RootLayout({
       >
         <Header />
         {children}
+        <FloatingCurrentActivity />
         <FloatingClock />
         <FloatingToDo />
       </body>
