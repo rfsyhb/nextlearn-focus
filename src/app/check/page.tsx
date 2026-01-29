@@ -38,7 +38,8 @@ export default function CheckPage() {
 
   const getImageUrl = (name: string) => {
     if (name === 'Free Time') return '/windDown.gif';
-    return '/onComputer.gif';
+    if (name === 'Lock In') return '/onComputer.gif';
+    return '/snorlaxSleep.gif';
   };
 
   return (
@@ -49,7 +50,9 @@ export default function CheckPage() {
         width={160}
         height={160}
       />
-      <p className='font-mono'>{timeLeft}</p>
+      {activity.name === 'Sleeping' ? null : (
+        <p className='font-mono'>{timeLeft}</p>
+      )}
     </main>
   );
 }

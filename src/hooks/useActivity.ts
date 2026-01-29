@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import { useNow } from './useNow';
 
-type ActivityName = 'Free Time' | 'Lock In';
+type ActivityName = 'Free Time' | 'Lock In' | 'Sleeping';
 
 type ActivityResult = {
   name: ActivityName;
@@ -24,6 +24,8 @@ const slots: Slot[] = [
   { startMin: 15 * 60, endMin: 17 * 60, name: 'Lock In' },
   { startMin: 17 * 60, endMin: 19 * 60, name: 'Free Time' },
   { startMin: 19 * 60, endMin: 21 * 60, name: 'Lock In' },
+  { startMin: 21 * 60, endMin: 24 * 60, name: 'Sleeping' },
+  { startMin: 0, endMin: 4 * 60, name: 'Sleeping' },
 ];
 
 // Helper

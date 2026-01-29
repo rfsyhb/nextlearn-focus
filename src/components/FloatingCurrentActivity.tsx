@@ -34,6 +34,8 @@ export default function FloatingCurrentActivity() {
         return 'Gotta go harder, move smarter, think wiser, stack more, talk less.';
       case 'Free Time':
         return 'Your time is limited. Satisfy your soul not society.';
+      case 'Sleeping':
+        return 'A well-rested mind is a focused mind.';
       default:
         return '';
     }
@@ -51,10 +53,18 @@ export default function FloatingCurrentActivity() {
             height={120}
             priority
           />
-        ) : (
+        ) : activity.name === 'Free Time' ? (
           <Image
             src='/windDown.gif'
             alt='Free Time'
+            width={120}
+            height={120}
+            priority
+          />
+        ) : (
+          <Image
+            src='/snorlaxSleep.gif'
+            alt='Sleeping'
             width={120}
             height={120}
             priority
@@ -65,9 +75,11 @@ export default function FloatingCurrentActivity() {
       <div className='w-64'>
         <h2 className='font-bold text-2xl'>
           <span className='uppercase'>{activity.name} </span>
-          <span className='font-normal text-lg text-background hover:text-foreground cursor-pointer'>
-            ({timeLeft})
-          </span>
+          {activity.name === 'Sleeping' ? null : (
+            <span className='font-normal text-lg text-background hover:text-foreground cursor-pointer'>
+              ({timeLeft})
+            </span>
+          )}
         </h2>
         <p className='text-sm'>{getDescription(activity.name)}</p>
       </div>
