@@ -1,10 +1,6 @@
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import './globals.css';
-import Header from '@/components/Header';
-import FloatingToDo from '@/components/FloatingToDo';
-import FloatingClock from '@/components/FloatingClock';
-import FloatingCurrentActivity from '@/components/FloatingCurrentActivity';
 
 const poppins = Poppins({
   variable: '--font-poppins',
@@ -16,8 +12,8 @@ export const metadata: Metadata = {
   title: 'focus.',
   description: 'a leap of faith',
   icons: {
-    icon: '/riyalicon.jpeg'
-  }
+    icon: '/riyalicon.jpeg',
+  },
 };
 
 export default function RootLayout({
@@ -27,15 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body
-        className={`${poppins.variable} antialiased`}
-      >
-        <Header />
-        {children}
-        <FloatingCurrentActivity />
-        <FloatingClock />
-        <FloatingToDo />
-      </body>
+      <body className={`${poppins.variable} antialiased`}>{children}</body>
     </html>
   );
 }
