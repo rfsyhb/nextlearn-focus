@@ -19,6 +19,7 @@ const mandatoryTasks: MandatoryTask[] = [
 
 export function useTaskDetector() {
   const addTask = useTaskStore((s) => s.addTask);
+  const autoAddTask = useSessionStore((s) => s.isAutoAddTask);
 
   const hasMandatoryCreated = useSessionStore((s) => s.hasMandatoryCreated);
   const markMandatoryCreated = useSessionStore((s) => s.markMandatoryCreated);
@@ -26,6 +27,8 @@ export function useTaskDetector() {
   const timersRef = useRef<number[]>([]);
 
   useEffect(() => {
+    if (!autoAddTask) return; // auto add task disabled
+
     const nowMs = Date.now();
 
     for (const task of mandatoryTasks) {
@@ -55,5 +58,5 @@ export function useTaskDetector() {
       for (const t of timersRef.current) clearTimeout(t);
       timersRef.current = [];
     };
-  }, [addTask, hasMandatoryCreated, markMandatoryCreated]);
+  }, [autoAddTask, addTask, hasMandatoryCreated, markMandatoryCreated]);
 }

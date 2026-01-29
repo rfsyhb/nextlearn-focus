@@ -8,6 +8,7 @@ interface SessionState {
   lastReset: string; // YYYY-MM-DD
   lastCompleted: number; // last completed date in milliseconds
   isRunning: boolean; // is the timer running
+  isAutoAddTask: boolean; // is auto add task enabled
 
   createdMandatory: Record<string, true>;
   markMandatoryCreated: (title: string) => void;
@@ -21,6 +22,7 @@ interface SessionState {
   resetCompleted: () => void; // Reset completed array
   setLastReset: (date: string) => void; // Set the last reset date
   setRunning: (v: boolean) => void; // Set the running state
+  setIsAutoAddTask: (v: boolean) => void; // Set the auto add task state
 }
 
 export const useSessionStore = create<SessionState>()(
@@ -33,6 +35,7 @@ export const useSessionStore = create<SessionState>()(
       lastReset: new Date().toISOString().slice(0, 10), // e.g. '2025-05-19'
       lastCompleted: 0, // last completed date in milliseconds
       isRunning: false,
+      isAutoAddTask: false,
 
       createdMandatory: {},
       markMandatoryCreated: (title) =>
@@ -42,6 +45,7 @@ export const useSessionStore = create<SessionState>()(
       hasMandatoryCreated: (title) => !!get().createdMandatory[title],
 
       // actions
+      setIsAutoAddTask: (v) => set({ isAutoAddTask: v }),
       setCount: (n) =>
         set({
           count: n,
