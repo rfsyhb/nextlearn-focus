@@ -4,6 +4,7 @@ import FloatingClock from '@/components/FloatingClock';
 import FloatingCurrentActivity from '@/components/FloatingCurrentActivity';
 import FloatingToDo from '@/components/FloatingToDo';
 import Header from '@/components/Header';
+import MobileGuard from '@/components/MobileGuard';
 import Setting from '@/components/Setting';
 import useTimer from '@/hooks/useTimer';
 import { useSessionStore } from '@/stores/useSessionStore';
@@ -26,7 +27,7 @@ export default function HomePage() {
   };
 
   return (
-    <>
+    <MobileGuard>
       <Header />
 
       <main
@@ -68,6 +69,6 @@ export default function HomePage() {
       <FloatingCurrentActivity />
       <FloatingClock />
       <FloatingToDo />
-    </>
+    </MobileGuard>
   );
 }

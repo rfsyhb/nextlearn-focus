@@ -2,10 +2,21 @@
 
 import { useActivity } from '@/hooks/useActivity';
 import { useNow } from '@/hooks/useNow';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 export default function CheckPage() {
   const activity = useActivity();
   const now = useNow();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) {
+    return null;
+  }
+
   if (!activity) {
     return (
       <main className='w-full h-screen flex justify-center items-center'>
@@ -25,10 +36,20 @@ export default function CheckPage() {
     return `${hours}h ${minutes}m ${seconds}s`;
   })();
 
+  const getImageUrl = (name: string) => {
+    if (name === 'Free Time') return '/windDown.gif';
+    return '/onComputer.gif';
+  };
+
   return (
     <main className='w-full h-screen flex flex-col justify-center items-center'>
-      <h1 className='text-2xl font-bold'>{activity.name}</h1>
-      <p className='text-lg'>{timeLeft}</p>
+      <Image
+        src={getImageUrl(activity.name)}
+        alt={activity.name}
+        width={160}
+        height={160}
+      />
+      <p className='font-mono'>{timeLeft}</p>
     </main>
   );
 }

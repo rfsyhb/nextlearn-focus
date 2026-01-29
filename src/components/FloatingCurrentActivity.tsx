@@ -2,10 +2,19 @@
 import { useActivity } from '@/hooks/useActivity';
 import { useNow } from '@/hooks/useNow';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 export default function FloatingCurrentActivity() {
+  const [mounted, setMounted] = useState(false);
   const now = useNow();
   const activity = useActivity();
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
   if (!activity) return <p>Off hours</p>;
 
   const timeLeftMs = activity.endsAt.getTime() - now;
@@ -56,7 +65,9 @@ export default function FloatingCurrentActivity() {
       <div className='w-64'>
         <h2 className='font-bold text-2xl'>
           <span className='uppercase'>{activity.name} </span>
-          <span className='font-normal text-lg text-background hover:text-foreground cursor-pointer'>({timeLeft})</span>
+          <span className='font-normal text-lg text-background hover:text-foreground cursor-pointer'>
+            ({timeLeft})
+          </span>
         </h2>
         <p className='text-sm'>{getDescription(activity.name)}</p>
       </div>
